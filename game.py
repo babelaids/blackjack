@@ -22,6 +22,7 @@ while True:
 	while playing:
 
 		table.hit_stand(deck,player_hand)
+		player_hand.ace_high()
 		table.show_some(player_hand,dealer_hand)
 
 		if player_hand.value >21:
@@ -29,6 +30,7 @@ while True:
 
 			break
 	if player_hand.value <= 21:
+		
 		while dealer_hand.value < player_hand.value:
 			table.hit(deck,dealer_hand)
 

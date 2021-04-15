@@ -1,7 +1,7 @@
 import random
 
 
-values = {'Ace':1, 'Two':2, 'Three':3, 'Four':4, 'Five':5, 'Six':6, 'Seven':7, 'Eight':8, 'Nine':9, 'Ten':10, 'Jack':10, 'Queen':10, 'King':10, 'HighAce': 11}
+values = {'Two':2, 'Three':3, 'Four':4, 'Five':5, 'Six':6, 'Seven':7, 'Eight':8, 'Nine':9, 'Ten':10, 'Jack':10, 'Queen':10, 'King':10, 'Ace': 11}
 suits = ('Hearts', 'Diamonds', 'Spades', 'Clubs')
 ranks = ('Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Jack','Queen','King','Ace')
 
@@ -39,27 +39,19 @@ class Hand():
 	def __init__(self):
 		self.cards = []
 		self.value = 0
-		self.aces = []
+		self.aces = 0
 
 	def add_card(self,new_card):
-		if type(new_card) == type([]):
-			self.cards.extend(new_card)
-			self.value += new_card.value
-		else:
-			self.cards.append(new_card)
-			self.value += new_card.value
-
-	def got_ace(self):
-		if new_card == values["Ace"]:
-			if type(self.aces) == type([]):
-				self.aces.append('x')
+		
+		self.cards.append(new_card)
+		self.value += values[new_card.rank]
+		if new_card.rank == "Ace":
+			self.aces += 1
 
 	def ace_high(self):
-		for ace in self.aces():
-			if self.value + 10 <= 21:
-				self.value["Ace"] = self.value["HighAce"]
-			else:
-				pass
+		while self.value > 21 and self.aces:
+			self.value -= 10
+			self.aces -= 1
 
 class Chips():
 	def __init__(self):
@@ -89,30 +81,33 @@ def take_bet(chips):
 			
 		else:
 			print("You can't afford that!")
+
 def hit(deck,hand):
 	single_card = deck.deal()
 	hand.add_card(single_card)
-	hand.ace_high()
 
 def hit_stand(deck,hand):
 	global playing
-	hand = hand.cards()
-	while playing:
-		for x in hand:
-			print(x)
-		answer = input("Will you Hit or Stand? (type h or s).  ")
-		if answer.lower() == "h":
+	while True:
+		
+		x = input("Will you Hit or Stand? (type h or s).  ")
+		
+		if x.lower() == "h":
 			hit(deck,hand)
-		elif answer.lower() == "s":
+		elif x.lower() == "s":
 			print(f" You have {hand.value}. Dealer's turn!")
 			playing = False
+		else:
+			print("please enter H or S only.")
+			continue
+		break
 
 def show_some(player,dealer):
-	print("/n Dealer's hand:  ")
+	print("Dealer's hand:  ")
 	print("(first card hidden)")
 	print(dealer.cards[1])
 
-	print("/n Player's hand:")
+	print("Player's hand:")
 	for card in player.cards:
 		print(card)
 	print(f"({player.value})")
